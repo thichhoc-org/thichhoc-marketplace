@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "thichhoc",
+  "description": "Plugin marketplace của thichhoc — skills, commands và agents dùng chung cho các dự án thichhoc.",
+  "version": "0.1.0",
+  "owner": {
+    "name": "thichhoc",
+    "url": "https://thichhoc.org"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "thichhoc",
+      "displayName": "thichhoc",
+      "description": "Bộ skills/commands/agents nội bộ của thichhoc.",
+      "version": "0.1.0",
+      "source": "./plugins/thichhoc",
+      "author": {
+        "name": "thichhoc"
+      },
+      "homepage": "https://github.com/thichhoc-org/thichhoc-marketplace",
+      "repository": "https://github.com/thichhoc-org/thichhoc-marketplace",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": ["thichhoc", "workflow"]
+    }
+  ]
+}
