@@ -1,6 +1,6 @@
 ---
 name: thcli
-description: Làm việc với các ứng dụng nội bộ Thích Học qua thcli (Thích Học CLI), thay cho MCP. share.thichhoc.com (chia sẻ file/thư mục, "gửi link", share tạm/mãi mãi), link.thichhoc.com (rút gọn link, thống kê lượt mở, quảng cáo trung gian), payment.thichhoc.com (thanh toán, hoàn tiền kèm biên lai, hoá đơn điện tử, đối soát sao kê), catalog.thichhoc.org (sản phẩm, giá, chiến dịch giảm giá, mã giảm giá, lô mã kích hoạt, báo cáo doanh thu), clio.thichhoc.org (Content Studio: viết, duyệt, lên lịch, ghi nhận bài đăng mạng xã hội theo thương hiệu). Dùng khi được nhờ thao tác trên một trong các app này, hoặc khi lệnh thcli báo lỗi cần chẩn đoán.
+description: Làm việc với các ứng dụng nội bộ Thích Học qua thcli (Thích Học CLI), thay cho MCP. share.thichhoc.com (chia sẻ file/thư mục, "gửi link", share tạm/mãi mãi), link.thichhoc.com (rút gọn link, thống kê lượt mở, quảng cáo trung gian), payment.thichhoc.com (thanh toán, hoàn tiền kèm biên lai, hoá đơn điện tử, đối soát sao kê), catalog.thichhoc.org (sản phẩm, giá, chiến dịch giảm giá, mã giảm giá, lô mã kích hoạt, báo cáo doanh thu), clio.thichhoc.org (module content; Content Studio: viết, duyệt, lên lịch, ghi nhận bài đăng mạng xã hội theo thương hiệu). Dùng khi được nhờ thao tác trên một trong các app này, hoặc khi lệnh thcli báo lỗi cần chẩn đoán.
 ---
 
 # thcli
@@ -14,7 +14,7 @@ chối (exit 4) thì nói cho người dùng biết, kèm vai trò còn thiếu 
 ```sh
 command -v thcli || npm i -g --install-links github:thichhoc-org/thcli
 thcli list                      # module có sẵn / đã cài
-thcli install <module>          # share | link | payment | catalog | clio
+thcli install <module>          # share | link | payment | catalog | content
 thcli whoami <module>           # email và vai trò của bạn ở service đó
 ```
 
@@ -62,13 +62,15 @@ thcli whoami <module>           # email và vai trò của bạn ở service đ�
 ### share
 
 ```sh
-thcli share put ./bao-cao.pdf              # in link; --internal: chỉ nhóm Nội bộ; --forever: không hết hạn
+thcli share put ./bao-cao.pdf              # in link công khai, xoá sau 30 ngày (--forever: không hết hạn)
+thcli share put ./ke-hoach.pdf --internal  # chỉ nhóm Nội bộ, không hết hạn (--temp: xoá sau 30 ngày)
 thcli share put ./thu-muc --main index.html
 thcli share ls · thcli share stats <link|mã> · thcli share download <link|mã> -o ./tai-ve
 thcli share rm <link|mã>                   # 2 bước
 ```
 
-`put` từ chối file có vẻ chứa bí mật (khoá, .env…). Chỉ dùng `--force` khi người dùng xác nhận.
+Trang HTML gọi CSS, ảnh bằng đường dẫn tương đối thì share cả thư mục (giữ cấu trúc) với `--main`, đừng
+share riêng file HTML. `put` từ chối file có vẻ chứa bí mật (khoá, .env…). Chỉ dùng `--force` khi người dùng xác nhận.
 
 ### link
 
@@ -115,21 +117,21 @@ thcli payment recon statement <account_id> sao-ke.csv --format mbbank
 
 Hoàn tiền là chuyển tiền thật. Chỉ xác nhận khi người dùng đưa biên lai và bảo làm.
 
-### clio
+### content (Clio)
 
 Bạn hành động **với tư cách người dùng**, không phải AI: duyệt được nếu họ có vai trò duyệt.
 
 ```sh
-thcli clio work                            # việc của tôi (canReview/canEdit)
-thcli clio context <brandId>               # đọc brand kit + playbook trước khi viết
-thcli clio story create <brandId> --file bai.json [--submit]   # schema: thcli clio tools create_story
-thcli clio upload <brandId> anh.png --story <storyId>
-thcli clio variant update <variantId> --story <storyId> --caption @caption.md
-thcli clio submit|approve|reject|request-changes <variantId>@<version> …   # hoặc --story để tự lấy version
-thcli clio schedule <brandId> <variantId>=2026-12-10T12:00:00Z
-thcli clio published <brandId> <variantId> <url bài đăng>
-thcli clio mentions                        # bình luận đang gắn AI
-thcli clio brand get <brandId> --dir kit && thcli clio brand set <brandId> --version N --playbook kit/playbook.md
+thcli content work                            # việc của tôi (canReview/canEdit)
+thcli content context <brandId>               # đọc brand kit + playbook trước khi viết
+thcli content story create <brandId> --file bai.json [--submit]   # schema: thcli content tools create_story
+thcli content upload <brandId> anh.png --story <storyId>
+thcli content variant update <variantId> --story <storyId> --caption @caption.md
+thcli content submit|approve|reject|request-changes <variantId>@<version> …   # hoặc --story để tự lấy version
+thcli content schedule <brandId> <variantId>=2026-12-10T12:00:00Z
+thcli content published <brandId> <variantId> <url bài đăng>
+thcli content mentions                        # bình luận đang gắn AI
+thcli content brand get <brandId> --dir kit && thcli content brand set <brandId> --version N --playbook kit/playbook.md
 ```
 
 ## Chẩn đoán
